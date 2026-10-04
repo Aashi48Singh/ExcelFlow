@@ -112,11 +112,7 @@
 //   .catch((err) => {
 //     console.error("Failed to start server:", err.message);
 //     process.exit(1);
-//   });
-import dns from "dns";
-
-// Use the DNS server that successfully resolved MongoDB Atlas
-dns.setServers(["10.164.208.228"]);
+//   })
 
 import dotenv from "dotenv";
 import express from "express";
@@ -181,8 +177,7 @@ app.use(
     windowMs: 15 * 60 * 1000,
     max: 50,
     standardHeaders: true,
-    legacyHeaders: false,
-
+    legacyHeaders: true,
     message: {
       message:
         "Too many attempts. Please try again later.",
@@ -197,7 +192,7 @@ app.use(
     windowMs: 60 * 1000,
     max: 300,
     standardHeaders: true,
-    legacyHeaders: false,
+    legacyHeaders: true,
   })
 );
 
@@ -223,7 +218,7 @@ const port = process.env.PORT || 4000;
 // Connect MongoDB first, then start server
 connectDB()
   .then(() => {
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(
         `ExcelFlow API running on port ${port}`
       );
